@@ -73,36 +73,6 @@ class SongController {
         return res.status(500).json(error);
       });
   }
-
-  async login(req, res) {
-    await SongModel.findOne({
-      name: req.params.name,
-      password: req.params.password,
-    })
-      .then((response) => {
-        const token = Jwt.generateJWT(response.id)
-          .then((response) => {
-            const json = JSON.parse(`{"token": "${response}"}`);
-            return res.status(200).json(json);
-          })
-          .catch((error) => {
-            return res.status(500).json(error);
-          });
-      })
-      .catch((error) => {
-        return res.status(500).json(error);
-      });
-  }
-
-  async logout(req, res) {
-    Jwt.disableJWT(req.params.token)
-      .then((response) => {
-        return res.status(200);
-      })
-      .catch((error) => {
-        return res.status(500).json(error);
-      });
-  }
 }
 
 module.exports = new SongController();

@@ -1,5 +1,7 @@
 const PlaylistModel = require("../models/PlaylistModel");
+const SongModel = require("../models/SongModel");
 const Jwt = require("../middlewares/Jwt.js");
+const UserModel = require("../models/UserModel");
 
 class PlaylistController {
   async create(req, res) {
@@ -43,7 +45,40 @@ class PlaylistController {
   async get(req, res) {
     await PlaylistModel.findOne({ id: req.params.id })
       .then((response) => {
-        return res.status(200).json(response);
+        //const result = response["id"];
+        const result = {
+          id: response.id,
+          owner: null,
+          name: response.name,
+          background: response.background,
+          songs: response.songs,
+        };
+        UserModel.findOne({ id: response.owner })
+          .then((response) => {
+            result["owner"] = response.name;
+            return res.status(200).json(result);
+          })
+          .catch((error) => {
+            return res.status(500).json(error);
+          });
+      })
+      .catch((error) => {
+        return res.status(500).json(error);
+      });
+  }
+
+  async getAllSongs(req, res) {
+    await PlaylistModel.findOne({ id: req.params.id })
+      .then((response) => {
+        console.log(response.songs);
+        SongModel.find({
+          id: { $in: response.songs },
+        }).then((response) => {
+          return res.status(200).json(response);
+        });
+      })
+      .catch((error) => {
+        return res.status(500).json(error);
       })
       .catch((error) => {
         return res.status(500).json(error);

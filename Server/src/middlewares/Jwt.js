@@ -7,7 +7,7 @@ const blacklist = [];
 class Jwt {
   async verifyJWT(req, res, next) {
     const token = req.headers["access-token"];
-    const index = this.blacklist.findIndex((item) => item === token);
+    const index = blacklist.findIndex((item) => item === token);
 
     if (index !== -1) {
       return res.status(401).end();

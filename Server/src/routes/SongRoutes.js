@@ -1,12 +1,12 @@
 const express = require("express");
 const router = express.Router();
-const PlaylistController = require("../controller/PessoaController");
-const PlaylistValidation = require("../middlewares/PlaylistValidation");
+const SongController = require("../controllers/SongController");
+const SongValidation = require("../middlewares/SongValidation");
 
-router.post("/", PlaylistValidation, PlaylistController.create);
-router.put("/:id", PlaylistValidation, PlaylistController.update);
-router.delete("/:id", PlaylistController.delete);
-router.get("/:id", PlaylistController.get);
-router.get("/filter/getAll", PlaylistController.getAll);
+router.get("/:id", SongController.get);
+router.get("/filter/getAll", SongController.getAll);
+router.post("/", SongValidation, SongController.create);
+router.put("/:id", SongValidation, SongController.update);
+router.delete(":id", SongController.delete);
 
 module.exports = router;
