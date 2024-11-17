@@ -80,10 +80,9 @@ class UserController {
       password: req.params.password,
     })
       .then((response) => {
-        const token = Jwt.generateJWT(response.id)
+        Jwt.generateJWT(response.id)
           .then((response) => {
-            const json = JSON.parse(`{"token": "${response}"}`);
-            return res.status(200).json(json);
+            return res.status(200).json({ token: response });
           })
           .catch((error) => {
             return res.status(500).json(error);
