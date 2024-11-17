@@ -7,7 +7,10 @@ import {
   TouchableOpacity,
 } from "react-native";
 
+import { useNavigation } from "@react-navigation/native";
+
 export default function SongList() {
+  const navigation = useNavigation();
   const mockSong = {
     songs: [
       {
@@ -137,7 +140,10 @@ export default function SongList() {
       data={mockSong.songs}
       keyExtractor={(item) => item.id.toString()}
       renderItem={({ item }) => (
-        <TouchableOpacity style={styles.itemContainer}>
+        <TouchableOpacity style={styles.itemContainer} 
+        onPress ={() => 
+          navigation.navigate("SongPlayer", { item: item })
+        }>
           <Image
             style={styles.tinyIcon}
             source={{

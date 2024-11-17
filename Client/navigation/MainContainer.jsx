@@ -9,12 +9,15 @@ import Home from "./screens/Home";
 import Playlists from "./screens/Playlists";
 import AllSongs from "./screens/AllSongs";
 import PlaylistDetails from "./screens/PlaylistDetails";
+import SongPlayer from "./screens/SongPlayer";
 
 // Screen names
 const homeName = "Home";
 const playlistsName = "Playlists";
 const allSongsName = "AllSongs";
 const playlistDetailsName = "PlaylistDetails";
+const songPlayer = "SongPlayer"
+
 
 // Navigators
 const Tab = createBottomTabNavigator();
@@ -83,6 +86,11 @@ export default function MainContainer() {
           options={{
             headerShown: false,
           }}
+        />
+         <Stack.Screen
+          name={songPlayer}
+          component={SongPlayer}
+          options={{ headerShown: false }}
         />
       </Stack.Navigator>
     </NavigationContainer>
