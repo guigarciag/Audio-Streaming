@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState, useContext, useCallback } from "react";
 import {
   StyleSheet,
   Text,
@@ -6,23 +6,104 @@ import {
   Modal,
   TextInput,
   TouchableOpacity,
+  Alert,
 } from "react-native";
-import PlaylistList from "../../Components/PlaylistList";
-import FloatingButton from "../../Components/FloatingButton";
+import PlaylistList from "../../components/PlaylistList";
+import FloatingButton from "../../components/FloatingButton";
+import api from "../../services/api";
+import { AuthContext } from "../../context/AuthContext";
+import { useFocusEffect } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 
 export default function Playlists() {
   const [modalVisible, setModalVisible] = useState(false);
   const [playlistName, setPlaylistName] = useState("");
+  const [playlists, setPlaylists] = useState([]);
+  const { userLogged } = useContext(AuthContext);
+  const navigation = useNavigation();
+
+  useFocusEffect(
+    useCallback(() => {
+      getPlaylists();
+    }, [])
+  );
+
+  const handlePlaylistClick = async (item) => {
+    if (item?.songs?.length > 0) {
+      try {
+        const fullPlaylist = await getPlaylisitSongs(item?.id);
+        navigation.navigate("PlaylistDetails", { item: fullPlaylist });
+      } catch (error) {
+        console.error("Error fetching playlist songs:", error);
+      }
+    } else {
+      navigation.navigate("PlaylistDetails", { item });
+    }
+  };
+
+  async function getPlaylisitSongs(id) {
+    try {
+      const response = await api.get(`/playlist/getAllSongs/${id}`);
+      return response?.data?.playlist;
+    } catch (error) {
+      Alert.alert(error.toString());
+    }
+  }
+
+  async function getPlaylists() {
+    try {
+      const response = await api.get("/playlist/filter/getAll");
+      setPlaylists(response.data);
+    } catch (error) {
+      Alert.alert(error.toString());
+    }
+  }
+
+  async function createPlaylist() {
+    try {
+      const request = {
+        name: playlistName,
+        owner: userLogged?.id,
+      };
+      await api.post("/playlist", request);
+      getPlaylists();
+    } catch (error) {
+      Alert.alert(error.toString());
+    }
+  }
+
+  async function handleDeletePlaylist(id) {
+    try {
+      await api.delete(`/playlist/${id}`);
+      getPlaylists();
+    } catch (error) {
+      Alert.alert(error.toString());
+    }
+  }
 
   return (
-    <View style={styles.container}>
-      <View style={styles.titleContainer}>
-        <Text style={styles.title}>Your Library</Text>
+    <>
+      <View style={styles.container}>
+        <View style={styles.titleContainer}>
+          <Text style={styles.title}>Your Library</Text>
+        </View>
+        {playlists.length > 0 ? (
+          <View style={styles.playlistsContainer}>
+            <PlaylistList
+              playlists={playlists}
+              onDelete={handleDeletePlaylist}
+              handleClick={handlePlaylistClick}
+            />
+          </View>
+        ) : (
+          <View style={styles.centerContainer}>
+            <Text style={styles.centerText}>
+              No playlists yet. Create your first one!
+            </Text>
+          </View>
+        )}
+        <FloatingButton iconName="add" onPress={() => setModalVisible(true)} />
       </View>
-      <View style={styles.playlistsContainer}>
-        <PlaylistList />
-      </View>
-      <FloatingButton iconName={"add"} onPress={() => setModalVisible(true)} />
 
       <Modal
         animationType="slide"
@@ -53,6 +134,7 @@ export default function Playlists() {
               <TouchableOpacity
                 style={styles.continueButton}
                 onPress={() => {
+                  createPlaylist();
                   setModalVisible(false);
                   setPlaylistName("");
                 }}
@@ -63,7 +145,7 @@ export default function Playlists() {
           </View>
         </View>
       </Modal>
-    </View>
+    </>
   );
 }
 
@@ -86,6 +168,15 @@ const styles = StyleSheet.create({
   playlistsContainer: {
     marginTop: 10,
     marginBottom: 85,
+  },
+  centerContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  centerText: {
+    color: "grey",
+    fontSize: 14,
   },
   modalOverlay: {
     flex: 1,

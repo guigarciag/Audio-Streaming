@@ -1,8 +1,11 @@
 import * as React from "react";
+import { useContext, useEffect } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import { AuthContext } from "../context/AuthContext";
+import api from "../services/api";
 
 // Screens
 import Home from "./screens/Home";
@@ -16,8 +19,7 @@ const homeName = "Home";
 const playlistsName = "Playlists";
 const allSongsName = "AllSongs";
 const playlistDetailsName = "PlaylistDetails";
-const songPlayer = "SongPlayer"
-
+const songPlayer = "SongPlayer";
 
 // Navigators
 const Tab = createBottomTabNavigator();
@@ -72,6 +74,25 @@ function TabNavigator() {
 }
 
 export default function MainContainer() {
+  const { setJwt, setUserLogged } = useContext(AuthContext);
+
+  const authenticateUser = async () => {
+    try {
+      const name = "adm";
+      const password = "password";
+
+      const response = await api.post(`/user/login/${name}/${password}`);
+      setJwt(response?.data?.token);
+      setUserLogged(response?.data?.user);
+    } catch (error) {
+      console.log(error.toString());
+    }
+  };
+
+  useEffect(() => {
+    authenticateUser();
+  }, []);
+
   return (
     <NavigationContainer>
       <Stack.Navigator>
@@ -87,7 +108,7 @@ export default function MainContainer() {
             headerShown: false,
           }}
         />
-         <Stack.Screen
+        <Stack.Screen
           name={songPlayer}
           component={SongPlayer}
           options={{ headerShown: false }}

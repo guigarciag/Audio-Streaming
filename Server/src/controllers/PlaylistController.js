@@ -20,8 +20,8 @@ class PlaylistController {
     // req = request  e res = response
     const nextId = await getNextId(req, res);
     req.body.id = nextId;
-    const user = new PlaylistModel(req.body);
-    await user
+    const playlist = new PlaylistModel(req.body);
+    await playlist
       .save()
       .then((response) => {
         return res.status(200).json(response);
@@ -32,14 +32,43 @@ class PlaylistController {
   }
 
   async getAll(req, res) {
-    await PlaylistModel.find()
-      .sort("id")
-      .then((response) => {
-        return res.status(200).json(response);
-      })
-      .catch((error) => {
-        return res.status(500).json(error);
-      });
+    try {
+      // Buscando todas as playlists e ordenando por ID
+      const playlists = await PlaylistModel.find().sort("id");
+
+      // Criando um array para armazenar as playlists com o nome do dono
+      const playlistsWithOwner = [];
+
+      for (let playlist of playlists) {
+        // Criando um objeto com as informações da playlist
+        const playlistData = {
+          id: playlist.id,
+          name: playlist.name,
+          background: playlist.background,
+          songs: playlist.songs,
+          owner: null, // Inicializa o campo owner como null
+        };
+
+        // Buscando o nome do dono usando o ID do owner
+        try {
+          const owner = await UserModel.findOne({ id: playlist.owner });
+          playlistData.owner = owner ? owner.name : null; // Se o owner existir, adiciona o nome
+        } catch (error) {
+          // Se não encontrar o dono ou houver erro, o campo owner permanece null
+          console.error("Erro ao buscar o owner:", error);
+        }
+
+        // Adiciona a playlist com o nome do dono ao array
+        playlistsWithOwner.push(playlistData);
+      }
+
+      // Retorna a resposta com todas as playlists, agora com o nome do owner
+      return res.status(200).json(playlistsWithOwner);
+    } catch (error) {
+      return res
+        .status(500)
+        .json({ message: "Erro ao buscar playlists", error: error.message });
+    }
   }
 
   async get(req, res) {

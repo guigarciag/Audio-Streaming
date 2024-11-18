@@ -75,22 +75,28 @@ class UserController {
   }
 
   async login(req, res) {
-    await UserModel.findOne({
-      name: req.params.name,
-      password: req.params.password,
-    })
-      .then((response) => {
-        Jwt.generateJWT(response.id)
-          .then((response) => {
-            return res.status(200).json({ token: response });
-          })
-          .catch((error) => {
-            return res.status(500).json(error);
-          });
-      })
-      .catch((error) => {
-        return res.status(500).json(error);
+    try {
+      const user = await UserModel.findOne({
+        name: req.params.name,
+        password: req.params.password,
       });
+
+      if (!user) {
+        return res.status(404).json({ message: "Usuário não encontrado" });
+      }
+
+      const token = await Jwt.generateJWT(user.id);
+
+      return res.status(200).json({
+        user: {
+          id: user.id,
+          name: user.name,
+        },
+        token,
+      });
+    } catch (error) {
+      return res.status(500).json({ message: "Erro no servidor", error });
+    }
   }
 
   async logout(req, res) {
