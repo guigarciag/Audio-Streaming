@@ -15,7 +15,6 @@ class SongController {
 
       return id;
     }
-    // req = request  e res = response
     const nextId = await getNextId(req, res);
     req.body.id = nextId;
     const user = new SongModel(req.body);

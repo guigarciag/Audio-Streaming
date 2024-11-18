@@ -15,7 +15,6 @@ class UserController {
 
       return id;
     }
-    // req = request  e res = response
     const nextId = await getNextId(req, res);
     req.body.id = nextId;
     const user = new UserModel(req.body);

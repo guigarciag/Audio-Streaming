@@ -1,0 +1,35 @@
+[{
+  "id": 1,
+  "name": "Shape of You",
+  "singer": "Ed Sheeran",
+  "background": "https://upload.wikimedia.org/wikipedia/pt/thumb/3/35/Ed_Sheeran_-_Shape_of_You.png/330px-Ed_Sheeran_-_Shape_of_You.png",
+  "path": "Ed Sheeran - Shape Of You.mp3"
+},
+{
+  "id": 2,
+  "name": "Blinding Lights",
+  "singer": "The Weeknd",
+  "background": "https://upload.wikimedia.org/wikipedia/en/e/e6/The_Weeknd_-_Blinding_Lights.png",
+  "path": "The Weeknd - Blinding Lights.mp3"
+},
+{
+  "id": 3,
+  "name": "Someone Like You",
+  "singer": "Adele",
+  "background": "https://upload.wikimedia.org/wikipedia/pt/thumb/2/2d/Adele_-_Someone_Like_You.jpg/330px-Adele_-_Someone_Like_You.jpg",
+  "path": "Adele - Someone Like You.mp3"
+},
+{
+  "id": 4,
+  "name": "Smells Like Teen Spirit",
+  "singer": "Nirvana",
+  "background": "https://upload.wikimedia.org/wikipedia/pt/3/3f/Nevermind.jpg",
+  "path": "Nirvana - Smells Like Teen Spirit.mp3"
+},
+{
+  "id": 5,
+  "name": "Bohemian Rhapsody",
+  "singer": "Queen",
+  "background": "https://upload.wikimedia.org/wikipedia/pt/thumb/9/9f/Bohemian_Rhapsody.png/330px-Bohemian_Rhapsody.png",
+  "path": "Queen - Bohemian Rhapsody.mp3"
+}]

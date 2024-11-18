@@ -17,7 +17,6 @@ class PlaylistController {
 
       return id;
     }
-    // req = request  e res = response
     const nextId = await getNextId(req, res);
     req.body.id = nextId;
     const playlist = new PlaylistModel(req.body);
@@ -33,36 +32,29 @@ class PlaylistController {
 
   async getAll(req, res) {
     try {
-      // Buscando todas as playlists e ordenando por ID
       const playlists = await PlaylistModel.find().sort("id");
 
-      // Criando um array para armazenar as playlists com o nome do dono
       const playlistsWithOwner = [];
 
       for (let playlist of playlists) {
-        // Criando um objeto com as informações da playlist
         const playlistData = {
           id: playlist.id,
           name: playlist.name,
           background: playlist.background,
           songs: playlist.songs,
-          owner: null, // Inicializa o campo owner como null
+          owner: null,
         };
 
-        // Buscando o nome do dono usando o ID do owner
         try {
           const owner = await UserModel.findOne({ id: playlist.owner });
-          playlistData.owner = owner ? owner.name : null; // Se o owner existir, adiciona o nome
+          playlistData.owner = owner ? owner.name : null;
         } catch (error) {
-          // Se não encontrar o dono ou houver erro, o campo owner permanece null
           console.error("Erro ao buscar o owner:", error);
         }
 
-        // Adiciona a playlist com o nome do dono ao array
         playlistsWithOwner.push(playlistData);
       }
 
-      // Retorna a resposta com todas as playlists, agora com o nome do owner
       return res.status(200).json(playlistsWithOwner);
     } catch (error) {
       return res
@@ -74,7 +66,6 @@ class PlaylistController {
   async get(req, res) {
     await PlaylistModel.findOne({ id: req.params.id })
       .then((response) => {
-        //const result = response["id"];
         const result = {
           id: response.id,
           owner: null,
@@ -97,35 +88,67 @@ class PlaylistController {
   }
 
   async getAllSongs(req, res) {
-    await PlaylistModel.findOne({ id: req.params.id })
-      .then((response) => {
-        console.log(response.songs);
-        SongModel.find({
-          id: { $in: response.songs },
-        }).then((response) => {
-          return res.status(200).json(response);
-        });
-      })
-      .catch((error) => {
-        return res.status(500).json(error);
-      })
-      .catch((error) => {
-        return res.status(500).json(error);
+    try {
+      const playlist = await PlaylistModel.findOne({ id: req.params.id });
+
+      if (!playlist) {
+        return res.status(404).json({ message: "Playlist not found" });
+      }
+
+      const owner = await UserModel.findOne({ id: playlist.owner });
+
+      const songs = await SongModel.find({
+        id: { $in: playlist.songs },
       });
+
+      return res.status(200).json({
+        playlist: {
+          id: playlist.id,
+          name: playlist.name,
+          owner: owner ? owner.name : null,
+          background: playlist.background,
+          songs,
+        },
+      });
+    } catch (error) {
+      return res.status(500).json({ error: error.message });
+    }
   }
 
   async update(req, res) {
-    await PlaylistModel.findOneAndUpdate(
-      { id: Number.parseInt(req.params.id) },
-      req.body,
-      { new: true }
-    )
-      .then((response) => {
-        return res.status(200).json(response);
-      })
-      .catch((error) => {
-        return res.status(500).json(error);
+    const playlistId = Number.parseInt(req.params.id);
+
+    try {
+      const updatedPlaylist = await PlaylistModel.findOneAndUpdate(
+        { id: playlistId },
+        req.body,
+        { new: true }
+      );
+
+      if (!updatedPlaylist) {
+        return res.status(404).json({ message: "Playlist não encontrada" });
+      }
+
+      const songs = await SongModel.find({
+        id: { $in: updatedPlaylist.songs },
       });
+
+      const owner = await UserModel.findOne({ id: updatedPlaylist.owner });
+
+      return res.status(200).json({
+        playlist: {
+          id: updatedPlaylist.id,
+          name: updatedPlaylist.name,
+          owner: owner ? owner.name : null,
+          background: updatedPlaylist.background,
+          songs,
+        },
+      });
+    } catch (error) {
+      return res
+        .status(500)
+        .json({ message: "Erro ao atualizar a playlist", error });
+    }
   }
 
   async delete(req, res) {
@@ -136,6 +159,76 @@ class PlaylistController {
       .catch((error) => {
         return res.status(500).json(error);
       });
+  }
+
+  async removeSongFromPlaylist(req, res) {
+    const playlistId = Number.parseInt(req.params.playlistId);
+    const songId = Number.parseInt(req.params.songId);
+
+    try {
+      const updatedPlaylist = await PlaylistModel.findOneAndUpdate(
+        { id: playlistId },
+        { $pull: { songs: songId } },
+        { new: true }
+      );
+
+      if (!updatedPlaylist) {
+        return res.status(404).json({ message: "Playlist not found" });
+      }
+
+      const songs = await SongModel.find({
+        id: { $in: updatedPlaylist.songs },
+      });
+
+      const owner = await UserModel.findOne({ id: updatedPlaylist.owner });
+
+      return res.status(200).json({
+        playlist: {
+          id: updatedPlaylist.id,
+          name: updatedPlaylist.name,
+          owner: owner ? owner.name : null,
+          background: updatedPlaylist.background,
+          songs,
+        },
+      });
+    } catch (error) {
+      return res.status(500).json({ error: error.message });
+    }
+  }
+
+  async addSongToPlaylist(req, res) {
+    const playlistId = Number.parseInt(req.params.playlistId);
+    const songId = Number.parseInt(req.params.songId);
+
+    try {
+      const updatedPlaylist = await PlaylistModel.findOneAndUpdate(
+        { id: playlistId },
+        { $addToSet: { songs: songId } },
+        { new: true }
+      );
+
+      if (!updatedPlaylist) {
+        return res.status(404).json({ message: "Playlist not found" });
+      }
+
+      const songs = await SongModel.find({
+        id: { $in: updatedPlaylist.songs },
+      });
+
+      const owner = await UserModel.findOne({ id: updatedPlaylist.owner });
+
+      return res.status(200).json({
+        playlist: {
+          id: updatedPlaylist.id,
+          name: updatedPlaylist.name,
+          owner: owner ? owner.name : null,
+          background: updatedPlaylist.background,
+          songs,
+        },
+      });
+    } catch (error) {
+      return res.status(500).json({ error: error.message });
+    }
   }
 }
 
