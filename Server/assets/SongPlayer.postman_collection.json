@@ -1,0 +1,658 @@
+{
+	"info": {
+		"_postman_id": "1f7b9de9-a358-42b5-920c-7809b51c53fc",
+		"name": "SongPlayer",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "30635808"
+	},
+	"item": [
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Get user by id",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "access-token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTczMTc5NTkyMn0.UalUYpsnLssZMqO0iM5GIB7tCOmD0czOuz5k9mHhaq8",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \"name\": \"Guilherme\",\r\n    \"password\": \"teste\",\r\n    \"premium\": false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{url}}:3000/user/:id",
+							"protocol": "http",
+							"host": [
+								"{{url}}"
+							],
+							"port": "3000",
+							"path": [
+								"user",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all users",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "access-token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTczMTc5NTkyMn0.UalUYpsnLssZMqO0iM5GIB7tCOmD0czOuz5k9mHhaq8",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \"name\": \"Guilherme\",\r\n    \"password\": \"teste\",\r\n    \"premium\": false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{url}}:3000/user/filter/getAll",
+							"protocol": "http",
+							"host": [
+								"{{url}}"
+							],
+							"port": "3000",
+							"path": [
+								"user",
+								"filter",
+								"getAll"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create new user",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"\",\r\n    \"password\": \"\",\r\n    \"premium\": false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{url}}:3000/user/",
+							"protocol": "http",
+							"host": [
+								"{{url}}"
+							],
+							"port": "3000",
+							"path": [
+								"user",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://{{url}}:3000/user/:name/:password",
+							"protocol": "http",
+							"host": [
+								"{{url}}"
+							],
+							"port": "3000",
+							"path": [
+								"user",
+								":name",
+								":password"
+							],
+							"variable": [
+								{
+									"key": "name",
+									"value": ""
+								},
+								{
+									"key": "password",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Logout",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://{{url}}:3000/user/:token",
+							"protocol": "http",
+							"host": [
+								"{{url}}"
+							],
+							"port": "3000",
+							"path": [
+								"user",
+								":token"
+							],
+							"variable": [
+								{
+									"key": "token",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update user",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "access-token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTczMTc5NTkyMn0.UalUYpsnLssZMqO0iM5GIB7tCOmD0czOuz5k9mHhaq8",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"\",\r\n    \"password\": \"\",\r\n    \"premium\": false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{url}}:3000/user/:id",
+							"protocol": "http",
+							"host": [
+								"{{url}}"
+							],
+							"port": "3000",
+							"path": [
+								"user",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete user",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "access-token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTczMTc5NTkyMn0.UalUYpsnLssZMqO0iM5GIB7tCOmD0czOuz5k9mHhaq8",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://{{url}}:3000/user/:id",
+							"protocol": "http",
+							"host": [
+								"{{url}}"
+							],
+							"port": "3000",
+							"path": [
+								"user",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Playlist",
+			"item": [
+				{
+					"name": "Get playlist by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{url}}:3000/playlist/:id",
+							"protocol": "http",
+							"host": [
+								"{{url}}"
+							],
+							"port": "3000",
+							"path": [
+								"playlist",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all playlists",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{url}}:3000/playlist/filter/getAll",
+							"protocol": "http",
+							"host": [
+								"{{url}}"
+							],
+							"port": "3000",
+							"path": [
+								"playlist",
+								"filter",
+								"getAll"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all songs in a playlist",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{url}}:3000/playlist/getAllSongs/:id",
+							"protocol": "http",
+							"host": [
+								"{{url}}"
+							],
+							"port": "3000",
+							"path": [
+								"playlist",
+								"getAllSongs",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create new playlist",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"\",\r\n    \"owner\": 0,\r\n    \"background\": \"\",\r\n    \"songs\": [0,1,2]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{url}}:3000/playlist/",
+							"protocol": "http",
+							"host": [
+								"{{url}}"
+							],
+							"port": "3000",
+							"path": [
+								"playlist",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update playlist",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"\",\r\n    \"owner\": 0,\r\n    \"background\": \"\",\r\n    \"songs\": [0,1,2]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{url}}:3000/user/:id",
+							"protocol": "http",
+							"host": [
+								"{{url}}"
+							],
+							"port": "3000",
+							"path": [
+								"user",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add song to playlist",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "http://{{url}}:3000/playlist/:playlistId/:songId",
+							"protocol": "http",
+							"host": [
+								"{{url}}"
+							],
+							"port": "3000",
+							"path": [
+								"playlist",
+								":playlistId",
+								":songId"
+							],
+							"variable": [
+								{
+									"key": "playlistId",
+									"value": ""
+								},
+								{
+									"key": "songId",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete playlist",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://{{url}}:3000/user/:id",
+							"protocol": "http",
+							"host": [
+								"{{url}}"
+							],
+							"port": "3000",
+							"path": [
+								"user",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remove song from playlist",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://{{url}}:3000/playlist/:playlistId/:songId",
+							"protocol": "http",
+							"host": [
+								"{{url}}"
+							],
+							"port": "3000",
+							"path": [
+								"playlist",
+								":playlistId",
+								":songId"
+							],
+							"variable": [
+								{
+									"key": "playlistId",
+									"value": ""
+								},
+								{
+									"key": "songId",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Song",
+			"item": [
+				{
+					"name": "Get song by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{url}}:3000/song/:id",
+							"protocol": "http",
+							"host": [
+								"{{url}}"
+							],
+							"port": "3000",
+							"path": [
+								"song",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all songs",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{url}}:3000/song/filter/getAll",
+							"protocol": "http",
+							"host": [
+								"{{url}}"
+							],
+							"port": "3000",
+							"path": [
+								"song",
+								"filter",
+								"getAll"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create new song",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"\",\r\n    \"singer\": \"\",\r\n    \"background\": \"\",\r\n    \"path\": \"\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{url}}:3000/song/",
+							"protocol": "http",
+							"host": [
+								"{{url}}"
+							],
+							"port": "3000",
+							"path": [
+								"song",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update song",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"\",\r\n    \"singer\": \"\",\r\n    \"background\": \"\",\r\n    \"path\": \"\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{url}}:3000/song/:id",
+							"protocol": "http",
+							"host": [
+								"{{url}}"
+							],
+							"port": "3000",
+							"path": [
+								"song",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete song",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://{{url}}:3000/song/:id",
+							"protocol": "http",
+							"host": [
+								"{{url}}"
+							],
+							"port": "3000",
+							"path": [
+								"song",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "url",
+			"value": "localhost"
+		}
+	]
+}
