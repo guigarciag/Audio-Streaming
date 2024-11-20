@@ -12,27 +12,14 @@ import { useNavigation } from "@react-navigation/native";
 import { Swipeable } from "react-native-gesture-handler";
 
 export default function PlaylistList({ playlists, onDelete, handleClick }) {
-  const navigation = useNavigation();
-
   const renderRightActions = (item) => (
     <TouchableOpacity
       style={styles.deleteButton}
-      onPress={() => handleDelete(item)}
+      onPress={() => onDelete(item.id)}
     >
       <Text style={styles.deleteText}>Delete</Text>
     </TouchableOpacity>
   );
-
-  const handleDelete = (item) => {
-    Alert.alert(
-      "Excluir Playlist",
-      `Tem certeza que deseja excluir a playlist "${item.name}"?`,
-      [
-        { text: "Cancelar", style: "cancel" },
-        { text: "Excluir", onPress: () => onDelete(item.id) },
-      ]
-    );
-  };
 
   const renderItem = ({ item }) => (
     <Swipeable renderRightActions={() => renderRightActions(item)}>

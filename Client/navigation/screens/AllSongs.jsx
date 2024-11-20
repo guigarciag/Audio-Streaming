@@ -22,7 +22,10 @@ export default function AllSongs() {
   }
 
   const handleSongClick = (item) => {
-    navigation.navigate("SongPlayer", { item: item });
+    navigation.navigate("SongPlayer", {
+      songs,
+      initialIndex: songs.findIndex((song) => song.id === item.id),
+    });
   };
 
   return (

@@ -20,6 +20,8 @@ export default function PlaylistDetails({ route }) {
   const navigation = useNavigation();
   const [item, setItem] = useState(route.params.item || {});
   const [modalVisible, setModalVisible] = useState(false);
+  const [removeSongModalVisible, setRemoveSongModalVisible] = useState(false);
+  const [songToRemove, setSongToRemove] = useState(null);
   const [songs, setSongs] = useState([]);
   const [editModalVisible, setEditModalVisible] = useState(false);
   const [newName, setNewName] = useState(item?.name || "");
@@ -47,7 +49,6 @@ export default function PlaylistDetails({ route }) {
       };
 
       const response = await api.put(`/playlist/${item.id}`, playlistToSave);
-      console.log("@@@@", response.data);
 
       const updatedValues = {
         id: response?.data?.playlist?.id,
@@ -65,6 +66,31 @@ export default function PlaylistDetails({ route }) {
       Alert.alert("Erro", error?.response?.data?.erro || "Erro desconhecido.");
     }
   }
+
+  const handleRemoveSong = (songId) => {
+    setSongToRemove(songId);
+    setRemoveSongModalVisible(true);
+  };
+
+  const confirmRemoveSong = () => {
+    removeSongFromPlaylist(songToRemove);
+    setRemoveSongModalVisible(false);
+  };
+
+  const removeSongFromPlaylist = async (songId) => {
+    try {
+      const response = await api.delete(`/playlist/${item.id}/${songId}`);
+
+      if (response.status === 200) {
+        const updatedValues = response.data.playlist;
+        setItem(updatedValues);
+      } else {
+        console.log("Erro ao tentar remover a música da playlist");
+      }
+    } catch (error) {
+      console.error("Erro ao remover a música:", error);
+    }
+  };
 
   async function addSongToPlaylist(songId) {
     try {
@@ -89,8 +115,11 @@ export default function PlaylistDetails({ route }) {
     await addSongToPlaylist(item?.id);
   };
 
-  const handleSongClickPlaylist = (item) => {
-    navigation.navigate("SongPlayer", { item: item });
+  const handleSongClickPlaylist = (songValue) => {
+    navigation.navigate("SongPlayer", {
+      songs: item.songs,
+      initialIndex: item?.songs?.findIndex((song) => song.id === songValue.id),
+    });
   };
 
   const pickImage = async () => {
@@ -146,7 +175,11 @@ export default function PlaylistDetails({ route }) {
 
       <View style={styles.songsContainer}>
         {item?.songs?.length > 0 ? (
-          <SongList songs={item.songs} handleClick={handleSongClickPlaylist} />
+          <SongList
+            songs={item.songs}
+            handleClick={handleSongClickPlaylist}
+            handleDelete={handleRemoveSong}
+          />
         ) : (
           <View style={styles.centerContainer}>
             <Text style={styles.centerText}>
@@ -224,6 +257,35 @@ export default function PlaylistDetails({ route }) {
             >
               <Text style={styles.cancelText}>Cancel</Text>
             </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={removeSongModalVisible}
+        onRequestClose={() => setRemoveSongModalVisible(false)}
+      >
+        <View style={styles.modalRemoveOverlay}>
+          <View style={styles.modalRemoveContent}>
+            <Text style={styles.modalRemoveTitle}>Remove Song</Text>
+            <Text style={styles.modalRemoveMessage}>
+              Are you sure you want to remove this song from the playlist?
+            </Text>
+            <View style={styles.modalRemoveButtons}>
+              <TouchableOpacity
+                style={styles.cancelRemoveButton}
+                onPress={() => setRemoveSongModalVisible(false)}
+              >
+                <Text style={styles.cancelRemoveText}>Cancel</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.deleteRemoveButton}
+                onPress={() => confirmRemoveSong()}
+              >
+                <Text style={styles.continueRemoveText}>Delete</Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
       </Modal>
@@ -318,7 +380,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   modalContent: {
-    width: "80%",
+    width: "90%",
+    height: "90%",
     backgroundColor: "#2C2C2C",
     borderRadius: 10,
     padding: 20,
@@ -369,5 +432,75 @@ const styles = StyleSheet.create({
     height: 80,
     borderRadius: 10,
     marginBottom: 15,
+  },
+  deleteButton: {
+    flex: 1,
+    alignItems: "center",
+    padding: 10,
+    marginLeft: 5,
+    backgroundColor: "red",
+    borderRadius: 5,
+  },
+
+  modalRemoveOverlay: {
+    flex: 1,
+    backgroundColor: "rgba(0, 0, 0, 0.7)",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  modalRemoveContent: {
+    width: "80%",
+    backgroundColor: "#2C2C2C",
+    borderRadius: 10,
+    padding: 20,
+    alignItems: "center",
+  },
+  modalRemoveTitle: {
+    fontSize: 20,
+    color: "white",
+    marginBottom: 15,
+  },
+  modalRemoveMessage: {
+    fontSize: 16,
+    color: "white",
+    marginBottom: 15,
+  },
+  modalRemoveButtons: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    width: "100%",
+  },
+  cancelRemoveButton: {
+    flex: 1,
+    alignItems: "center",
+    padding: 10,
+    marginRight: 5,
+    borderWidth: 1,
+    borderColor: "#aaa",
+    borderRadius: 5,
+  },
+  cancelRemoveText: {
+    color: "#aaa",
+    fontSize: 16,
+  },
+  continueRemoveButton: {
+    flex: 1,
+    alignItems: "center",
+    padding: 10,
+    marginLeft: 5,
+    backgroundColor: "green",
+    borderRadius: 5,
+  },
+  deleteRemoveButton: {
+    flex: 1,
+    alignItems: "center",
+    padding: 10,
+    marginLeft: 5,
+    backgroundColor: "red",
+    borderRadius: 5,
+  },
+  continueRemoveText: {
+    color: "white",
+    fontSize: 16,
   },
 });

@@ -17,8 +17,10 @@ import { useNavigation } from "@react-navigation/native";
 
 export default function Playlists() {
   const [modalVisible, setModalVisible] = useState(false);
+  const [deleteModalVisible, setDeleteModalVisible] = useState(false);
   const [playlistName, setPlaylistName] = useState("");
   const [playlists, setPlaylists] = useState([]);
+  const [playlistToDelete, setPlaylistToDelete] = useState(null);
   const { userLogged } = useContext(AuthContext);
   const navigation = useNavigation();
 
@@ -76,6 +78,7 @@ export default function Playlists() {
     try {
       await api.delete(`/playlist/${id}`);
       getPlaylists();
+      setDeleteModalVisible(false);
     } catch (error) {
       Alert.alert(error.toString());
     }
@@ -91,7 +94,10 @@ export default function Playlists() {
           <View style={styles.playlistsContainer}>
             <PlaylistList
               playlists={playlists}
-              onDelete={handleDeletePlaylist}
+              onDelete={(id) => {
+                setPlaylistToDelete(id);
+                setDeleteModalVisible(true);
+              }}
               handleClick={handlePlaylistClick}
             />
           </View>
@@ -105,6 +111,7 @@ export default function Playlists() {
         <FloatingButton iconName="add" onPress={() => setModalVisible(true)} />
       </View>
 
+      {/* Modal para criação de playlist */}
       <Modal
         animationType="slide"
         transparent={true}
@@ -140,6 +147,36 @@ export default function Playlists() {
                 }}
               >
                 <Text style={styles.continueText}>Continue</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
+
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={deleteModalVisible}
+        onRequestClose={() => setDeleteModalVisible(false)}
+      >
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalContent}>
+            <Text style={styles.modalTitle}>Delete Playlist</Text>
+            <Text style={styles.modalMessage}>
+              Are you sure you want to delete this playlist?
+            </Text>
+            <View style={styles.modalButtons}>
+              <TouchableOpacity
+                style={styles.cancelButton}
+                onPress={() => setDeleteModalVisible(false)}
+              >
+                <Text style={styles.cancelText}>Cancel</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.deleteButton}
+                onPress={() => handleDeletePlaylist(playlistToDelete)}
+              >
+                <Text style={styles.continueText}>Delete</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -196,6 +233,11 @@ const styles = StyleSheet.create({
     color: "white",
     marginBottom: 15,
   },
+  modalMessage: {
+    fontSize: 16,
+    color: "white",
+    marginBottom: 15,
+  },
   input: {
     width: "100%",
     borderBottomWidth: 1,
@@ -228,6 +270,14 @@ const styles = StyleSheet.create({
     padding: 10,
     marginLeft: 5,
     backgroundColor: "green",
+    borderRadius: 5,
+  },
+  deleteButton: {
+    flex: 1,
+    alignItems: "center",
+    padding: 10,
+    marginLeft: 5,
+    backgroundColor: "red",
     borderRadius: 5,
   },
   continueText: {

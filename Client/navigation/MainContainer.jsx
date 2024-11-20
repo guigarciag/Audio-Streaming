@@ -17,7 +17,7 @@ import SongPlayer from "./screens/SongPlayer";
 // Screen names
 const homeName = "Home";
 const playlistsName = "Playlists";
-const allSongsName = "AllSongs";
+const allSongsName = "All Songs";
 const playlistDetailsName = "PlaylistDetails";
 const songPlayer = "SongPlayer";
 
@@ -78,7 +78,7 @@ export default function MainContainer() {
 
   const authenticateUser = async () => {
     try {
-      const name = "adm";
+      const name = "Audio Streaming User";
       const password = "password";
 
       const response = await api.post(`/user/login/${name}/${password}`);

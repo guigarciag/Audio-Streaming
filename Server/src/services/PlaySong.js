@@ -16,7 +16,7 @@ function PlaySong() {
 
   app.get("/audio/:path", (req, res) => {
     const filePath = path.join(ASSETS_PATH, req.params.path);
-    const CHUNK_SIZE = 50000 * 1e3;
+    const CHUNK_SIZE = 500000 * 1e3;
 
     const range = req.headers.range || "0";
     const audioSize = statSync(filePath).size;

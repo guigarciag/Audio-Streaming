@@ -1,35 +1,142 @@
-[{
-  "id": 1,
-  "name": "Shape of You",
-  "singer": "Ed Sheeran",
-  "background": "https://upload.wikimedia.org/wikipedia/pt/thumb/3/35/Ed_Sheeran_-_Shape_of_You.png/330px-Ed_Sheeran_-_Shape_of_You.png",
-  "path": "Ed Sheeran - Shape Of You.mp3"
-},
-{
-  "id": 2,
-  "name": "Blinding Lights",
-  "singer": "The Weeknd",
-  "background": "https://upload.wikimedia.org/wikipedia/en/e/e6/The_Weeknd_-_Blinding_Lights.png",
-  "path": "The Weeknd - Blinding Lights.mp3"
-},
-{
-  "id": 3,
-  "name": "Someone Like You",
-  "singer": "Adele",
-  "background": "https://upload.wikimedia.org/wikipedia/pt/thumb/2/2d/Adele_-_Someone_Like_You.jpg/330px-Adele_-_Someone_Like_You.jpg",
-  "path": "Adele - Someone Like You.mp3"
-},
-{
-  "id": 4,
-  "name": "Smells Like Teen Spirit",
-  "singer": "Nirvana",
-  "background": "https://upload.wikimedia.org/wikipedia/pt/3/3f/Nevermind.jpg",
-  "path": "Nirvana - Smells Like Teen Spirit.mp3"
-},
-{
-  "id": 5,
-  "name": "Bohemian Rhapsody",
-  "singer": "Queen",
-  "background": "https://upload.wikimedia.org/wikipedia/pt/thumb/9/9f/Bohemian_Rhapsody.png/330px-Bohemian_Rhapsody.png",
-  "path": "Queen - Bohemian Rhapsody.mp3"
-}]
+[
+  {
+    "id": 1,
+    "name": "Shape of You",
+    "singer": "Ed Sheeran",
+    "background": "https://upload.wikimedia.org/wikipedia/pt/thumb/3/35/Ed_Sheeran_-_Shape_of_You.png/330px-Ed_Sheeran_-_Shape_of_You.png",
+    "path": "Ed Sheeran - Shape Of You.mp3"
+  },
+  {
+    "id": 2,
+    "name": "Blinding Lights",
+    "singer": "The Weeknd",
+    "background": "https://upload.wikimedia.org/wikipedia/en/e/e6/The_Weeknd_-_Blinding_Lights.png",
+    "path": "The Weeknd - Blinding Lights.mp3"
+  },
+  {
+    "id": 3,
+    "name": "Someone Like You",
+    "singer": "Adele",
+    "background": "https://upload.wikimedia.org/wikipedia/pt/thumb/2/2d/Adele_-_Someone_Like_You.jpg/330px-Adele_-_Someone_Like_You.jpg",
+    "path": "Adele - Someone Like You.mp3"
+  },
+  {
+    "id": 4,
+    "name": "Smells Like Teen Spirit",
+    "singer": "Nirvana",
+    "background": "https://upload.wikimedia.org/wikipedia/pt/3/3f/Nevermind.jpg",
+    "path": "Nirvana - Smells Like Teen Spirit.mp3"
+  },
+  {
+    "id": 5,
+    "name": "Bohemian Rhapsody",
+    "singer": "Queen",
+    "background": "https://upload.wikimedia.org/wikipedia/pt/thumb/9/9f/Bohemian_Rhapsody.png/330px-Bohemian_Rhapsody.png",
+    "path": "Queen - Bohemian Rhapsody.mp3"
+  },
+  {
+    "id": 6,
+    "name": "Hotel California",
+    "singer": "Eagles",
+    "background": "https://upload.wikimedia.org/wikipedia/pt/2/20/Hotel_California_by_the_Eagles_US_vinyl_single.png",
+    "path": "Eagles - Hotel California.mp3"
+  },
+  {
+    "id": 7,
+    "name": "Sweet Child O' Mine",
+    "singer": "Guns N' Roses",
+    "background": "https://upload.wikimedia.org/wikipedia/pt/thumb/e/e5/Guns_N%27_Roses_-_Sweet_Child_o%27_Mine.jpeg/330px-Guns_N%27_Roses_-_Sweet_Child_o%27_Mine.jpeg",
+    "path": "Guns N' Roses - Sweet Child O' Mine.mp3"
+  },
+  {
+    "id": 8,
+    "name": "Shallow",
+    "singer": "Lady Gaga & Bradley Cooper",
+    "background": "https://upload.wikimedia.org/wikipedia/pt/9/97/Lady_Gaga_%26_Bradley_Cooper_-_Shallow.png",
+    "path": "Lady Gaga & Bradley Cooper - Shallow.mp3"
+  },
+  {
+    "id": 9,
+    "name": "Thinking Out Loud",
+    "singer": "Ed Sheeran",
+    "background": "https://upload.wikimedia.org/wikipedia/pt/b/b7/Capa_de_Thinking_Out_Loud.png",
+    "path": "Ed Sheeran - Thinking Out Loud.mp3"
+  },
+  {
+    "id": 10,
+    "name": "Dancing Queen",
+    "singer": "ABBA",
+    "background": "https://upload.wikimedia.org/wikipedia/pt/4/45/Capa_Dancing_Queen_-_ABBA.jpg",
+    "path": "ABBA - Dancing Queen.mp3"
+  },
+  {
+    "id": 11,
+    "name": "Velha Infância",
+    "singer": "Tribalistas",
+    "background": "https://upload.wikimedia.org/wikipedia/pt/9/9f/Tribalistas_capa.jpg",
+    "path": "Tribalistas - Velha Infância.mp3"
+  },
+  {
+    "id": 12,
+    "name": "Evidências",
+    "singer": "Chitãozinho & Xororó",
+    "background": "https://upload.wikimedia.org/wikipedia/pt/thumb/f/f7/Chit%C3%A3ozinho_%26_Xoror%C3%B3_-_Cowboy_Do_Asfalto.jpeg/330px-Chit%C3%A3ozinho_%26_Xoror%C3%B3_-_Cowboy_Do_Asfalto.jpeg",
+    "path": "Chitãozinho & Xororó - Evidências.mp3"
+  },
+  {
+    "id": 13,
+    "name": "Firework",
+    "singer": "Katy Perry",
+    "background": "https://upload.wikimedia.org/wikipedia/pt/thumb/b/be/Katy_Perry_Firework.PNG/330px-Katy_Perry_Firework.PNG",
+    "path": "Katy Perry - Firework.mp3"
+  },
+  {
+    "id": 14,
+    "name": "Here Comes the Sun",
+    "singer": "The Beatles",
+    "background": "https://upload.wikimedia.org/wikipedia/en/4/42/Beatles_-_Abbey_Road.jpg",
+    "path": "The Beatles - Here Comes the Sun.mp3"
+  },
+  {
+    "id": 15,
+    "name": "Trem Bala",
+    "singer": "Ana Vilela",
+    "background": "https://upload.wikimedia.org/wikipedia/pt/b/bc/Ana_Vilela_-_Trem_Bala.png",
+    "path": "Ana Vilela - Trem Bala.mp3"
+  },
+  {
+    "id": 16,
+    "name": "Back in Black",
+    "singer": "AC/DC",
+    "background": "https://upload.wikimedia.org/wikipedia/pt/b/b6/Back_in_Black.jpg",
+    "path": "ACDC - Back in Black.mp3"
+  },
+  {
+    "id": 17,
+    "name": "Suspicious Minds",
+    "singer": "Elvis Presley",
+    "background": "https://upload.wikimedia.org/wikipedia/pt/5/5e/Elvis_Presley_-_From_Elvis_in_Memphis.jpg",
+    "path": "Elvis Presley - Suspicious Minds.mp3"
+  },
+  {
+    "id": 18,
+    "name": "My Universe",
+    "singer": "Coldplay & BTS",
+    "background": "https://upload.wikimedia.org/wikipedia/pt/a/a2/Coldplay_-_My_Universe.png",
+    "path": "Coldplay & BTS - My Universe.mp3"
+  },
+  {
+    "id": 19,
+    "name": "Yesterday",
+    "singer": "The Beatles",
+    "background": "https://upload.wikimedia.org/wikipedia/pt/thumb/d/d5/Beatles_-_Yesterday_-_Act_Naturally_%281965%29.jpeg/330px-Beatles_-_Yesterday_-_Act_Naturally_%281965%29.jpeg",
+    "path": "The Beatles - Yesterday.mp3"
+  },
+  {
+    "id": 20,
+    "name": "Duas Metades",
+    "singer": "Jorge & Mateus",
+    "background": "https://upload.wikimedia.org/wikipedia/pt/thumb/9/9b/Duas_Metades.jpg/330px-Duas_Metades.jpg",
+    "path": "Jorge & Mateus - Duas Metades.mp3"
+  }  
+]

@@ -164,6 +164,8 @@ class PlaylistController {
   async removeSongFromPlaylist(req, res) {
     const playlistId = Number.parseInt(req.params.playlistId);
     const songId = Number.parseInt(req.params.songId);
+    console.log("playlistId", playlistId);
+    console.log("songId", songId);
 
     try {
       const updatedPlaylist = await PlaylistModel.findOneAndUpdate(

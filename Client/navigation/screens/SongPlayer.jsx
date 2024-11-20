@@ -1,88 +1,87 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { Audio } from "expo-av";
 import Slider from "@react-native-community/slider";
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons } from "react-native-vector-icons";
 import { useNavigation } from "@react-navigation/native";
 
 const SongPlayer = ({ route }) => {
   const navigation = useNavigation();
-  const { item } = route.params;
-  const [sound, setSound] = useState(null);
+  const { songs, initialIndex } = route.params;
+  const [currentIndex, setCurrentIndex] = useState(initialIndex);
+  const soundRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
-  const [error, setError] = useState(null);
   const [progress, setProgress] = useState(0);
   const [duration, setDuration] = useState(0);
-  const [isUpdatingProgress, setIsUpdatingProgress] = useState(false);
 
-  const audioUrl = `http://192.168.0.10:4000/audio/${item.path}`;
+  const currentSong = songs[currentIndex];
+  const audioUrl = `http://192.168.0.10:4000/audio/${currentSong.path}`;
 
   useEffect(() => {
     const loadAudio = async () => {
+      if (soundRef.current) {
+        await soundRef.current.unloadAsync();
+      }
       try {
-        await Audio.setAudioModeAsync({
-          allowsRecordingIOS: false,
-          playsInSilentModeIOS: true,
-          shouldDuckAndroid: true,
-          playThroughEarpieceAndroid: false,
-          staysActiveInBackground: false,
-        });
-
         const { sound } = await Audio.Sound.createAsync(
           { uri: audioUrl },
-          { shouldPlay: false }
+          { shouldPlay: true }
         );
 
-        setSound(sound);
+        soundRef.current = sound;
         setIsLoaded(true);
+        setIsPlaying(true);
 
         const status = await sound.getStatusAsync();
         setDuration(status.durationMillis);
 
         sound.setOnPlaybackStatusUpdate((status) => {
-          if (status.isLoaded && status.positionMillis !== undefined) {
-            if (!isUpdatingProgress) {
-              setProgress(status.positionMillis);
+          if (status.isLoaded) {
+            setProgress(status.positionMillis);
+            setIsPlaying(status.isPlaying);
+            if (status.didJustFinish) {
+              handleNext();
             }
           }
         });
       } catch (err) {
         console.error("Erro ao carregar o áudio:", err);
-        setError("Falha ao carregar o áudio");
       }
     };
 
     loadAudio();
 
     return () => {
-      if (sound) {
-        sound.unloadAsync();
+      if (soundRef.current) {
+        soundRef.current.unloadAsync();
+        soundRef.current = null;
       }
     };
-  }, [isUpdatingProgress]);
+  }, [currentIndex]);
 
   const togglePlayback = async () => {
-    if (!isLoaded) {
-      console.log("Áudio ainda não foi carregado");
-      return;
-    }
+    if (!isLoaded || !soundRef.current) return;
 
-    const status = await sound.getStatusAsync();
+    const status = await soundRef.current.getStatusAsync();
 
     if (status.isPlaying) {
-      await sound.pauseAsync();
+      await soundRef.current.pauseAsync();
       setIsPlaying(false);
-      setIsUpdatingProgress(false);
-    } else if (status.isLoaded && status.positionMillis > 0) {
-      await sound.playAsync();
-      setIsPlaying(true);
-      setIsUpdatingProgress(true);
     } else {
-      await sound.playAsync();
+      await soundRef.current.playAsync();
       setIsPlaying(true);
-      setIsUpdatingProgress(true);
     }
+  };
+
+  const handleNext = () => {
+    setCurrentIndex((prevIndex) => (prevIndex + 1) % songs.length);
+  };
+
+  const handlePrevious = () => {
+    setCurrentIndex((prevIndex) =>
+      prevIndex === 0 ? songs.length - 1 : prevIndex - 1
+    );
   };
 
   const formatTime = (millis) => {
@@ -91,15 +90,12 @@ const SongPlayer = ({ route }) => {
     return `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
   };
 
-  const handleSliderChange = useCallback(
-    async (value) => {
-      if (sound) {
-        await sound.setPositionAsync(value);
-        setProgress(value);
-      }
-    },
-    [sound]
-  );
+  const handleSliderChange = useCallback(async (value) => {
+    if (soundRef.current) {
+      await soundRef.current.setPositionAsync(value);
+      setProgress(value);
+    }
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -109,19 +105,20 @@ const SongPlayer = ({ route }) => {
       >
         <Ionicons name="arrow-back" size={30} color="white" />
       </TouchableOpacity>
-      <Image style={styles.image} source={{ uri: item.background }} />
-      <Text style={styles.title}>{item.name}</Text>
-      <Text style={styles.artist}>{item.singer}</Text>
+      <Image style={styles.image} source={{ uri: currentSong.background }} />
+      <Text style={styles.title}>{currentSong.name}</Text>
+      <Text style={styles.artist}>{currentSong.singer}</Text>
 
       <Slider
         style={styles.progressBar}
         value={progress}
         maximumValue={duration}
+        minimumValue={0}
+        onValueChange={(value) => setProgress(value)}
+        onSlidingComplete={handleSliderChange}
         minimumTrackTintColor="#1DB954"
         maximumTrackTintColor="#fff"
         thumbTintColor="#1DB954"
-        onValueChange={handleSliderChange}
-        disabled={true}
       />
 
       <View style={styles.timeContainer}>
@@ -130,16 +127,20 @@ const SongPlayer = ({ route }) => {
       </View>
 
       <View style={styles.audioButtonsScreen}>
-        <TouchableOpacity style={styles.buttonPlay} onPress={togglePlayback}>
+        <TouchableOpacity onPress={handlePrevious} style={styles.button}>
+          <Ionicons name="play-skip-back" size={40} color="#fff" />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={togglePlayback} style={styles.buttonPlay}>
           <Ionicons
             name={isPlaying ? "pause" : "play"}
             size={50}
             color="#fff"
           />
         </TouchableOpacity>
+        <TouchableOpacity onPress={handleNext} style={styles.button}>
+          <Ionicons name="play-skip-forward" size={40} color="#fff" />
+        </TouchableOpacity>
       </View>
-
-      {error && <Text style={styles.errorText}>{error}</Text>}
     </View>
   );
 };
@@ -150,6 +151,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "#000",
+  },
+  button: {
+    marginTop: 10,
+    padding: 10,
   },
   backButton: {
     position: "absolute",
@@ -176,8 +181,8 @@ const styles = StyleSheet.create({
   },
   buttonPlay: {
     backgroundColor: "#1DB954",
-    width: 100,
-    height: 100,
+    width: 80,
+    height: 80,
     borderRadius: 50,
     justifyContent: "center",
     alignItems: "center",
